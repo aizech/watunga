@@ -47,24 +47,24 @@ In Agency Swarm, the folder structure is organized as follows:
 Follow this folder structure when creating or modifying files within the Agency Swarm framework:
 
 ```
-agency_name/
-├── agent_name/
+AgencyName/
+├── AgentName/
 │   ├── __init__.py
-│   ├── agent_name.py
+│   ├── AgentName.py
 │   ├── instructions.md
 │   └── tools/
-│       ├── tool_name1.py
-│       ├── tool_name2.py
-│       ├── tool_name3.py
+│       ├── ToolName1.py
+│       ├── ToolName2.py
+│       ├── ToolName3.py
 │       ├── ...
-├── another_agent/
+├── AnotherAgent/
 │   ├── __init__.py
-│   ├── another_agent.py
+│   ├── AnotherAgent.py
 │   ├── instructions.md
 │   └── tools/
-│       ├── tool_name1.py
-│       ├── tool_name2.py
-│       ├── tool_name3.py
+│       ├── ToolName1.py
+│       ├── ToolName2.py
+│       ├── ToolName3.py
 │       ├── ...
 ├── agency.py
 ├── agency_manifesto.md
