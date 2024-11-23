@@ -496,7 +496,7 @@ class AgencyTest(unittest.TestCase):
         """it should execute API calls concurrently with asyncio"""
         tools = []
         with open("./data/schemas/get-headers-params.json", "r") as f:
-            tools = ToolFactory.from_openapi_schema(f.read(), {})
+            tools = ToolFactory.from_openapi_schema(f.read(), {}, params={"query": "test", "domain": "print-headers"})
 
         ceo = Agent(name="CEO", tools=tools, instructions="You are an agent that tests concurrent API calls. You must say 'success' if the output contains headers, and 'error' if it does not and **nothing else**.")
 

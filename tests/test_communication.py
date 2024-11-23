@@ -19,7 +19,8 @@ class TestSendMessage(unittest.TestCase):
         self.ceo = Agent(
             name="CEO",
             description="Responsible for client communication, task planning and management.",
-            instructions="Your role is to route messages to other agents within your agency.",
+            instructions="""You are an agent for testing. If you detect a request to route to multiple agents at the same time, respond with 'error'. 
+            If there are errors in both requests, respond with 'fatal'. Do not output anything else.""",
             tools=[PrintTool]
         )
 
@@ -50,7 +51,8 @@ class TestSendMessage(unittest.TestCase):
     def test_send_message_double_recepient_error(self):
         ceo = Agent(name="CEO",
             description="Responsible for client communication, task planning and management.",
-            instructions="You are an agent for testing. Route request AT THE SAME TIME as instructed. If there is an error in a single request, please say 'error'. If there are errors in both requests, please say 'fatal'. do not output anything else.",
+            instructions="""You are an agent for testing. If you detect a request to route to multiple agents at the same time, respond with 'error'. 
+            If there are errors in both requests, respond with 'fatal'. Do not output anything else.""",
         )
         test_agent = Agent(name="Test Agent1",
                             description="Responsible for testing.",

@@ -3,7 +3,6 @@ import json
 import os
 import sys
 from importlib import import_module
-import importlib.util
 from typing import Any, Dict, List, Type, Union
 
 import jsonref
@@ -237,65 +236,14 @@ class ToolFactory:
     
     @staticmethod
     def from_file(file_path: str) -> Type[BaseTool]:
-        """Dynamically imports a BaseTool class from a Python file within a package structure."""
-        file_path = os.path.abspath(file_path)
-        directory, file_name = os.path.split(file_path)
-        module_name = os.path.splitext(file_name)[0]
-        class_name = module_name
-
-        # Determine the package structure
-        package_parts = []
-        current_dir = directory
-        while current_dir and os.path.basename(current_dir) != 'agency_swarm':
-            package_parts.insert(0, os.path.basename(current_dir))
-            parent_dir = os.path.dirname(current_dir)
-            if parent_dir == current_dir:  # Reached the root directory
-                break
-            current_dir = parent_dir
-
-        # Construct the full package name
-        if 'agency_swarm' in os.path.normpath(file_path):
-            package_name = 'agency_swarm.' + '.'.join(package_parts)
-        else:
-            package_name = '.'.join(package_parts)
-
-        # Add the parent directory of 'agency_swarm' to sys.path if it's not already there
-        if 'agency_swarm' in os.path.normpath(file_path):
-            agency_swarm_parent = os.path.dirname(os.path.dirname(file_path.split('agency_swarm')[0]))
-            if agency_swarm_parent not in sys.path:
-                sys.path.insert(0, agency_swarm_parent)
-
-        try:
-            spec = importlib.util.spec_from_file_location(module_name, file_path)
-            module = importlib.util.module_from_spec(spec)
-            
-            # Set __package__ to allow relative imports
-            module.__package__ = package_name
-            
-            sys.modules[module_name] = module
-            spec.loader.exec_module(module)
-
-            imported_class = getattr(module, class_name)
-
-            if not issubclass(imported_class, BaseTool):
-                raise TypeError(f"Class {class_name} must be a subclass of BaseTool")
-
-            return imported_class
-        except Exception as e:
-            print(f"Error importing {class_name} from {file_path}: {str(e)}")
-            raise
-    
-
-    """@staticmethod
-    def from_file(file_path: str) -> Type[BaseTool]:
-        Dynamically imports a BaseTool class from a Python file within a package structure.
+        """Dynamically imports a BaseTool class from a Python file within a package structure.
 
         Parameters:
             file_path: The file path to the Python file containing the BaseTool class.
 
         Returns:
             The imported BaseTool class.
-        
+        """
         file_path = os.path.relpath(file_path)
         # Normalize the file path to be absolute and extract components
         directory, file_name = os.path.split(file_path)
@@ -324,9 +272,7 @@ class ToolFactory:
         if not issubclass(imported_class, BaseTool):
             raise TypeError(f"Class {class_name} must be a subclass of BaseTool")
 
-        return imported_class"""
-
-
+        return imported_class
 
     @staticmethod
     def get_openapi_schema(tools: List[Type[BaseTool]], url: str, title="Agent Tools",
